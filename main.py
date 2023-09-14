@@ -11,7 +11,7 @@ dp = Dispatcher()
 inline_kb_menu = [
     [InlineKeyboardButton(text="Powerbank", callback_data="power")],
     [InlineKeyboardButton(text="Powerbank PD", callback_data="power_pd")],
-    [InlineKeyboardButton(text="Charging station", callback_data="carg_st")],
+    [InlineKeyboardButton(text="Charging station", callback_data="charg_st")],
     [InlineKeyboardButton(text="UPS", callback_data="ups")]
 ]
 
@@ -29,8 +29,20 @@ async def power_start(callback: Message):
     await callback.message.answer("Ви вибрали повербанк")
 
 @dp.callback_query(F.data == "power_pd")
-async def power_start(callback: Message):
+async def power_pd_start(callback: Message):
     await callback.message.answer("Ви вибрали повербанк ПД")
+
+
+@dp.callback_query(F.data == 'charg_st')
+async def charge_station_start(callback: Message):
+    await callback.message.answer('Ви вибрали зарядну станцію')
+
+
+@dp.callback_query(F.data == 'ups')
+async def UPS_start(callback: Message):
+    await callback.message.answer('Ви вибрали ДБЖ')
+
+
 
 async def main():
     await dp.start_polling(bot)
