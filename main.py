@@ -10,7 +10,9 @@ dp = Dispatcher()
 
 inline_kb_menu = [
     [InlineKeyboardButton(text="Powerbank", callback_data="power")],
-    [InlineKeyboardButton(text="Powerbank PD", callback_data="power_pd")]
+    [InlineKeyboardButton(text="Powerbank PD", callback_data="power_pd")],
+    [InlineKeyboardButton(text="Charging station", callback_data="carg_st")],
+    [InlineKeyboardButton(text="UPS", callback_data="ups")]
 ]
 
 
