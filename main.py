@@ -9,28 +9,31 @@ dp = Dispatcher()
 
 
 inline_kb_menu = [
-    [InlineKeyboardButton(text='Powerbank', callback_data='power')]
+    [InlineKeyboardButton(text="Powerbank", callback_data="power")],
+    [InlineKeyboardButton(text="Powerbank PD", callback_data="power_pd")]
 ]
 
 
 main_kb_menu = InlineKeyboardMarkup(inline_keyboard=inline_kb_menu)
 
 
-@dp.message(F.text == '/start')
+@dp.message(F.text == "/start")
 async def start(message: Message):
-    await message.answer(f'Привіт {message.from_user.first_name}\nВітаємо вас у <b>BlackoutAssistBot</b>\nЦей бот допоможе вам підібрати зарядний пристрій', parse_mode='html', reply_markup=main_kb_menu)
+    await message.answer(f"Привіт {message.from_user.first_name}\nВітаємо вас у <b>BlackoutAssistBot</b>\nЦей бот допоможе вам підібрати зарядний пристрій", parse_mode="html", reply_markup=main_kb_menu)
 
 
-@dp.callback_query(F.data == 'power')
+@dp.callback_query(F.data == "power")
 async def power_start(callback: Message):
-    await callback.message.answer('Ви вибрали повербанк')
+    await callback.message.answer("Ви вибрали повербанк")
 
-
+@dp.callback_query(F.data == "power_pd")
+async def power_start(callback: Message):
+    await callback.message.answer("Ви вибрали повербанк ПД")
 
 async def main():
     await dp.start_polling(bot)
-print('Запущено')
+print("Запущено")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     asyncio.run(main())
