@@ -3,6 +3,7 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup, Message
 import asyncio
 from constt import TOKEN
+import datetime
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
@@ -29,9 +30,12 @@ async def power_start(callback: Message):
 
 async def main():
     await dp.start_polling(bot)
-print('Запущено')
-
-print("Hello Vadim")
+"""
+Додаємо вивід часу запуску боту
+"""
+current_datetime = datetime.datetime.now()
+formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+print('Bot started successful at', formatted_datetime)
 
 
 if __name__ == '__main__':
