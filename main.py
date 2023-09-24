@@ -35,6 +35,7 @@ inline_kb_menu = [
 main_kb_menu = InlineKeyboardMarkup(inline_keyboard=inline_kb_menu)
 
 
+
 @form_router.message(Command("start"))
 async def start(message: Message):
     await message.answer(
@@ -165,7 +166,6 @@ async def UPS_start(callback: Message):
 
 async def main():
     await dp.start_polling(bot)
-
 
 """
 Додаємо вивід часу запуску боту
