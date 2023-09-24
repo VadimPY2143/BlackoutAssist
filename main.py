@@ -35,7 +35,6 @@ inline_kb_menu = [
 main_kb_menu = InlineKeyboardMarkup(inline_keyboard=inline_kb_menu)
 
 
-
 @form_router.message(Command("start"))
 async def start(message: Message):
     await message.answer(
@@ -75,12 +74,12 @@ async def set_powerbank_capacity(message: Message, state: FSMContext):
 async def set_powerbank_qc(message: Message, state: FSMContext):
     await state.set_state(PowerBank.choosing_QC_save)
     await message.answer(
-        "Чі підтримує телефон Power Delivery \n(Павербанк з робочою потужністю до 100W, USB-PD дозволяє заряджати навіть великі пристрої, такі як планшети і ноутбуки)?",
+        "Чи підтримує телефон Quick Charge \n(Павербанк з робочою потужністю до 100W, USB-PD дозволяє заряджати навіть великі пристрої, такі як планшети і ноутбуки)?",
         reply_markup=ReplyKeyboardMarkup(
             keyboard=[
                 [
-                    KeyboardButton(text="Так є PD"),
-                    KeyboardButton(text="Ні немає PD"),
+                    KeyboardButton(text="Так є QC"),
+                    KeyboardButton(text="Ні немає QC"),
                 ]
             ],
             resize_keyboard=True,
@@ -88,7 +87,7 @@ async def set_powerbank_qc(message: Message, state: FSMContext):
     )
 
 
-@form_router.message(PowerBank.choosing_QC_save, F.text.casefold() == "так є pd")
+@form_router.message(PowerBank.choosing_QC_save, F.text.casefold() == "так є qc")
 async def process_pd_yes(message: Message, state: FSMContext) -> None:
     await state.update_data(choosing_QC=True)
     await message.reply(
@@ -98,7 +97,7 @@ async def process_pd_yes(message: Message, state: FSMContext) -> None:
     await state.set_state(PowerBank.choosing_capacity_phone)
 
 
-@form_router.message(PowerBank.choosing_QC_save, F.text.casefold() == "ні немає pd")
+@form_router.message(PowerBank.choosing_QC_save, F.text.casefold() == "ні немає qc")
 async def process_pd_not(message: Message, state: FSMContext) -> None:
     await state.update_data(choosing_QC=False)
     await message.answer(
@@ -132,14 +131,14 @@ async def show_summary_pb(message: Message, data: Dict[str, Any]) -> None:
     real_capacity_fastcharge = choosing_capacity * AMPERAGE / AMPERAGE_FASTCHARGE * EFFICIENCY
     number_of_charges = real_capacity / choosing_capacity_phone
     number_of_charges_fastcharge = real_capacity_fastcharge / choosing_capacity_phone
-    text = f"<b>Павербанк з заявленою ємністю {choosing_capacity} мАч(міліампер-часів) </b> має насправді" \
-           f" ємність приблизно {real_capacity} мАч\n" \
-           f"А якщо заряджати телефон з швидкою зарядкою, то реальна ємність буде ще менше і приблизно " \
-           f"складатиме {real_capacity_fastcharge},\n " \
-           f"що у Ватт-годинах складає {wt_hour}Вт" \
-           f"Тому ваш телефон повербанк зможе зарядити {number_of_charges} раз(разів) у звичайному режимі " \
-           f"і {number_of_charges_fastcharge} раз(разів) у режимі швидкої зарядки\n " \
-           f"Дякуємо, що користуєтесь нашим ботом\n" \
+    text = f"<b>Павербанк з заявленою ємністю {choosing_capacity} мАч(міліампер-часів) </b> <b>Насправді має" \
+           f" ємність приблизно {real_capacity} мАч</b>\n" \
+           f"При заряджанні телефону з швидкою зарядкою ємність буде ще меншою і " \
+           f"складатиме {real_capacity_fastcharge}, " \
+           f"що у Ватт-годинах складає {wt_hour}Вт\n" \
+           f"Тому повербанк зможе зарядити ваш телефон {number_of_charges} разів у звичайному режимі" \
+           f" та {number_of_charges_fastcharge} разів у режимі швидкої зарядки\n" \
+           f"<b>Дякуємо, що користуєтесь нашим ботом</b>\n" \
            f"<b>Щоб почати спочатку введіть команду /start</b>"
     await message.answer(text=text, parse_mode='html', reply_markup=ReplyKeyboardRemove())
 
@@ -166,6 +165,7 @@ async def UPS_start(callback: Message):
 
 async def main():
     await dp.start_polling(bot)
+
 
 """
 Додаємо вивід часу запуску боту
