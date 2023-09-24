@@ -137,9 +137,9 @@ async def show_summary_pb(message: Message, data: Dict[str, Any]) -> None:
            f"складатиме {real_capacity_fastcharge},\n " \
            f"що у Ватт-годинах складає {wt_hour}Вт" \
            f"Тому ваш телефон повербанк зможе зарядити {number_of_charges} раз(разів) у звичайному режимі " \
-           f"і {number_of_charges_fastcharge} раз(разів) у режимі швидкої зарядки\n" \
+           f"і {number_of_charges_fastcharge} раз(разів) у режимі швидкої зарядки\n " \
            f"Дякуємо, що користуєтесь нашим ботом\n" \
-           f"Щоб почати спочатку введіть команду /start"
+           f"<b>Щоб почати спочатку введіть команду /start</b>"
     await message.answer(text=text, parse_mode='html', reply_markup=ReplyKeyboardRemove())
 
 
